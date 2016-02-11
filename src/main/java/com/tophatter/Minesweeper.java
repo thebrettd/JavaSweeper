@@ -2,34 +2,79 @@ package com.tophatter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
+
+import static com.tophatter.io.Input.queryUserForInt;
 
 /**
  * Created by brett on 2/10/16.
  */
 public class Minesweeper {
 
+    public enum GameStatus {
+        IN_PROGRESS,LOSS,VICTORY
+    }
+
     private Board board;
     private GameStatus status = GameStatus.IN_PROGRESS;
 
-    public Minesweeper(Board board) {
-        this.board = board;
+    private int numMines;
+    private int gridSize;
+
+    private int numRevealed;
+
+    public Minesweeper(int gridSize, int numMines) {
+        this.numMines = numMines;
+        this.gridSize = gridSize;
+
+        numRevealed = 0;
+        board = new Board(gridSize);
+
+        plantMines();
     }
 
     public static void start(Scanner scanner) {
-        Minesweeper game = collectInputParameters(scanner);
-        game.print();
-
-        run(scanner, game);
-
+        Minesweeper game = createGameFromInput(scanner);
+        game.run(scanner);
     }
 
-    private static void run(Scanner scanner, Minesweeper game) {
-        while(game.getStatus().equals(GameStatus.IN_PROGRESS)){
-            Move move = Move.getNextMove(scanner, game.getBoard());
-            game.applyMove(move);
+    private static Minesweeper createGameFromInput(Scanner scanner) {
 
-            switch(game.getStatus()){
+        int gridSize = queryUserForInt(scanner, "Enter size of the grid: ");
+        int numBombs = queryUserForInt(scanner, "Enter number of bombs: ");
+
+        return new Minesweeper(gridSize, numBombs);
+    }
+
+    private void plantMines() {
+        int minesPlanted = 0;
+
+        Random generator = new Random();
+        while(minesPlanted < numMines){
+
+            boolean plantingMine = true;
+            while (plantingMine) {
+                int randomX = generator.nextInt(board.getGridSize());
+                int randomY = generator.nextInt(board.getGridSize());
+                if(!(board.getCell(randomX,randomY).getValue().equals("M"))){
+                    board.putCell(randomX,randomY, new Cell("M"));
+                    minesPlanted++;
+                    plantingMine = false;
+                }
+            }
+        }
+    }
+
+    private void run(Scanner scanner) {
+
+        print();
+
+        while(getStatus().equals(GameStatus.IN_PROGRESS)){
+            Move move = Move.getNextMove(scanner, getBoard());
+            applyMove(move);
+
+            switch(getStatus()){
                 case LOSS:
                     System.out.println("Sorry, you lost!");
                     break;
@@ -37,7 +82,7 @@ public class Minesweeper {
                     System.out.println("Congrats, you win!");
                     break;
             }
-            game.print();
+            print();
         }
     }
 
@@ -47,12 +92,12 @@ public class Minesweeper {
 
     private void applyMove(Move move) {
         //Reveal the cell
-        Cell clickedCell = board.revealCell(move.getX(), move.getY());
+        Cell clickedCell = revealCell(move.getX(), move.getY());
 
         //Update game status
         if (clickedCell.getValue().equals("M")){
             this.status = GameStatus.LOSS;
-        }else if (board.swept()){
+        }else if (swept()){
             this.status = GameStatus.VICTORY;
         }else{
             System.out.println("Phew, not a bomb!");
@@ -64,7 +109,7 @@ public class Minesweeper {
                 clickAllAdjacentCells(move);
 
                 //Check for win conditions after autosweep
-                if (board.swept()){
+                if (swept()){
                     this.status = GameStatus.VICTORY;
                 }
             }
@@ -83,8 +128,8 @@ public class Minesweeper {
             Cell autoCell = board.getCell(autoMove.getX(), autoMove.getY());
             autoCell.setValue("0");
 
-            if (autoCell.getStatus().equals(CellStatus.HIDDEN)){
-                board.revealCell(autoMove.getX(), autoMove.getY()); //We know its a 0 or we wouldnt be here
+            if (autoCell.getStatus().equals(Cell.CellStatus.HIDDEN)){
+                revealCell(autoMove.getX(), autoMove.getY()); //We know its a 0 or we wouldnt be here
 
                 int adjacentBombs = countAdjacentBombs(autoMove.getX(), autoMove.getY());
 
@@ -96,6 +141,16 @@ public class Minesweeper {
             }
 
         }
+    }
+
+    public Cell revealCell(int x, int y){
+        Cell cell = board.getCell(x,y);
+        if (cell.getStatus() != Cell.CellStatus.REVEALED){
+            numRevealed++;
+        }
+        cell.revealed();
+
+        return cell;
     }
 
     public List<Move> computeAllAdjacentCells(Move move) {
@@ -175,31 +230,8 @@ public class Minesweeper {
         return cell.getValue().equals("M");
     }
 
-    private static Minesweeper collectInputParameters(Scanner scanner) {
-
-        int gridSize = -1;
-        System.out.println("Enter size of the grid: ");
-        String gridInput = scanner.nextLine();
-        while(gridSize == -1) {
-            try {
-                gridSize = Integer.parseInt(gridInput);
-            } catch (NumberFormatException e) {
-                System.out.println("Cannot parse integer from input: " + gridInput);
-            }
-        }
-
-        int numBombs = -1;
-        System.out.println("Enter number of bombs: ");
-        String bombInput = scanner.nextLine();
-        while (numBombs == -1){
-            try {
-                numBombs = Integer.parseInt(bombInput);
-            } catch (NumberFormatException e) {
-                System.out.println("Cannot parse integer from input: " + bombInput);
-            }
-        }
-
-        return new Minesweeper(new Board(gridSize, numBombs));
+    public boolean swept() {
+        return numRevealed + numMines == gridSize * gridSize;
     }
 
 

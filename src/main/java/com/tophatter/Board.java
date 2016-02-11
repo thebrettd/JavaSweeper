@@ -8,37 +8,13 @@ import java.util.Random;
 public class Board {
 
     private int gridSize;
-    private int numMines = 0;
 
     private Cell[][] myBoard;
-    private int numRevealed = 0;
-    private int totalCells;
 
-    public Board(int gridSize, int minesToPlant) {
+    public Board(int gridSize) {
         this.gridSize = gridSize;
-        this.totalCells = gridSize * gridSize;
 
         initializeEmptyBoard();
-        plantMines(gridSize, minesToPlant);
-
-
-    }
-
-    private void plantMines(int gridSize, int minesToPlant) {
-        Random generator = new Random();
-        while(numMines < minesToPlant){
-
-            boolean plantingMine = true;
-            while (plantingMine) {
-                int randomX = generator.nextInt(gridSize);
-                int randomY = generator.nextInt(gridSize);
-                if(!(myBoard[randomX][randomY].getValue().equals("M"))){
-                    myBoard[randomX][randomY] = new Cell("M");
-                    numMines++;
-                    plantingMine = false;
-                }
-            }
-        }
     }
 
     private void initializeEmptyBoard() {
@@ -52,24 +28,6 @@ public class Board {
 
     public int getGridSize() {
         return gridSize;
-    }
-
-    public Cell revealCell(int x, int y){
-        Cell cell = myBoard[x][y];
-        if (cell.getStatus() != CellStatus.REVEALED){
-            numRevealed++;
-        }
-        cell.revealed();
-
-        return cell;
-    }
-
-    public int getNumRevealed() {
-        return numRevealed;
-    }
-
-    public boolean swept() {
-        return numRevealed + numMines == totalCells;
     }
 
     public void print() {
@@ -99,5 +57,9 @@ public class Board {
 
     public Cell getCell(int x, int y) {
         return myBoard[x][y];
+    }
+
+    public void putCell(int x, int y, Cell m) {
+        myBoard[x][y] = m;
     }
 }

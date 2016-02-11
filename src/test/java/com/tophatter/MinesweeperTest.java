@@ -13,8 +13,7 @@ public class MinesweeperTest {
 
     @Test
     public void testAllAdjacentCells() throws Exception {
-        Board board = new Board(5,1);
-        Minesweeper game = new Minesweeper(board);
+        Minesweeper game = new Minesweeper(5,1);
         Move move = new Move(0,0);
         List<Move> moves = game.computeAllAdjacentCells(move);
         assertTrue(moves.size() == 3);
@@ -25,8 +24,7 @@ public class MinesweeperTest {
         moves = game.computeAllAdjacentCells(move);
         assertTrue(moves.size() == 8);
 
-        board = new Board(10,1);
-        game = new Minesweeper(board);
+        game = new Minesweeper(10,1);
         move = new Move(0,8);
         moves = game.computeAllAdjacentCells(move);
         assertTrue(moves.size() == 5);

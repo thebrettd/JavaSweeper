@@ -6,6 +6,10 @@ package com.tophatter;
  */
 public class Cell {
 
+    public enum CellStatus {
+        HIDDEN,REVEALED
+    }
+
     private String value;
 
     private CellStatus status = CellStatus.HIDDEN;

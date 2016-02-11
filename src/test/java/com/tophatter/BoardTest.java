@@ -13,29 +13,30 @@ public class BoardTest {
 
     @Test
     public void testGetGridSize() throws Exception {
-        Board board = new Board(5,10);
+        Board board = new Board(5);
         assertTrue(board.getGridSize() == 5);
     }
 
     @Test
     public void testSwept() throws Exception {
-        Board board = new Board(1,0);
-        assertFalse(board.swept());
-        board.revealCell(0,0);
-        assertTrue(board.swept());
 
-        board = new Board(2,0);
-        assertFalse(board.swept());
-        board.revealCell(0,0);
-        board.revealCell(0,1);
-        board.revealCell(1,0);
-        board.revealCell(1,1);
-        assertTrue(board.swept());
+        Minesweeper game = new Minesweeper(1, 0);
+        assertFalse(game.swept());
+        game.revealCell(0,0);
+        assertTrue(game.swept());
+
+        game = new Minesweeper(2, 0);
+        assertFalse(game.swept());
+        game.revealCell(0,0);
+        game.revealCell(0,1);
+        game.revealCell(1,0);
+        game.revealCell(1,1);
+        assertTrue(game.swept());
     }
 
     @Test
     public void testPrint() throws Exception {
-        Board board = new Board(5,10);
+        Board board = new Board(5);
         board.print();
     }
 
