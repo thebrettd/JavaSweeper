@@ -19,23 +19,14 @@ public class Move {
         int xValue = -1;
         int yValue = -1;
 
-        boolean validX = false;
-        while(!validX){
-            System.out.println(moveInputPrompt('x', board));
-            String xInput = scanner.nextLine();
-            try {
-                xValue = Integer.parseInt(xInput);
+        xValue = getX(scanner, board, xValue);
 
-                if (isValidMove(xValue, board)){
-                    validX = true;
-                }else{
-                    System.out.println(invalidMoveWarning(xValue));
-                }
-            }catch (NumberFormatException e){
-                System.out.println(moveInputPrompt('x',board));
-            }
-        }
+        yValue = getY(scanner, board, yValue);
 
+        return new Move(xValue, yValue);
+    }
+
+    private static int getY(Scanner scanner, Board board, int yValue) {
         boolean validY = false;
         while(!validY){
             System.out.println(moveInputPrompt('y',board));
@@ -52,8 +43,27 @@ public class Move {
                 System.out.println(moveInputPrompt('y',board));
             }
         }
+        return yValue;
+    }
 
-        return new Move(xValue, yValue);
+    private static int getX(Scanner scanner, Board board, int xValue) {
+        boolean validX = false;
+        while(!validX){
+            System.out.println(moveInputPrompt('x', board));
+            String xInput = scanner.nextLine();
+            try {
+                xValue = Integer.parseInt(xInput);
+
+                if (isValidMove(xValue, board)){
+                    validX = true;
+                }else{
+                    System.out.println(invalidMoveWarning(xValue));
+                }
+            }catch (NumberFormatException e){
+                System.out.println(moveInputPrompt('x',board));
+            }
+        }
+        return xValue;
     }
 
     private static boolean isValidMove(int value, Board board) {

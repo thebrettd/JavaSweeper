@@ -24,28 +24,15 @@ public class Cell {
 
     //todo: precompute display status, dont run through this switch every time
     public String print(){
-        String display;
-        switch (status){
-            case HIDDEN:
-                display = "◼";
-                break;
-            case REVEALED:
-
-                display = value;
-                break;
-            default:
-                throw new RuntimeException("Unknown cell status");
-        }
-        return display;
+        return status == CellStatus.HIDDEN ? "◼" : value;
     }
-
 
     public CellStatus getStatus() {
         return status;
     }
 
-    public void revealed() {
-        this.status = CellStatus.REVEALED;
+    public void setStatus(CellStatus status) {
+        this.status = status;
     }
 
     public void setValue(String value) {

@@ -28,7 +28,5 @@ public class MinesweeperTest {
         move = new Move(0,8);
         moves = game.computeAllAdjacentCells(move);
         assertTrue(moves.size() == 5);
-
-
     }
 }

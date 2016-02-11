@@ -32,6 +32,18 @@ public class Minesweeper {
         board = new Board(gridSize);
 
         plantMines();
+        computeAdjacentBombs();
+    }
+
+    private void computeAdjacentBombs() {
+        for(int y=0;y<gridSize;y++){
+            for (int x=0;x<gridSize;x++){
+                Cell cell = board.getCell(x,y);
+                if (!cell.getValue().equals("M")){
+                    cell.setValue("" + countAdjacentBombs(x,y));
+                }
+            }
+        }
     }
 
     public static void start(Scanner scanner) {
@@ -102,9 +114,7 @@ public class Minesweeper {
         }else{
             System.out.println("Phew, not a bomb!");
 
-            int adjacentBombs = updateCellValue(move, clickedCell);
-
-            if (adjacentBombs == 0){
+            if (clickedCell.getValue().equals("0")){
                 System.out.println("Clicked on a square with no adjacent bombs, automatically clicking all adjacent squares.");
                 clickAllAdjacentCells(move);
 
@@ -113,33 +123,19 @@ public class Minesweeper {
                     this.status = GameStatus.VICTORY;
                 }
             }
-
         }
-    }
-
-    private int updateCellValue(Move move, Cell result) {
-        int adjacentBombs = countAdjacentBombs(move.getX(), move.getY());
-        result.setValue(Integer.toString(adjacentBombs));
-        return adjacentBombs;
     }
 
     private void clickAllAdjacentCells(Move move) {
         for (Move autoMove: computeAllAdjacentCells(move)){
             Cell autoCell = board.getCell(autoMove.getX(), autoMove.getY());
-            autoCell.setValue("0");
 
             if (autoCell.getStatus().equals(Cell.CellStatus.HIDDEN)){
                 revealCell(autoMove.getX(), autoMove.getY()); //We know its a 0 or we wouldnt be here
-
-                int adjacentBombs = countAdjacentBombs(autoMove.getX(), autoMove.getY());
-
-
-                if (adjacentBombs == 0){
+                if (autoCell.getValue().equals("0")){
                     clickAllAdjacentCells(autoMove);
                 }
-
             }
-
         }
     }
 
@@ -148,7 +144,7 @@ public class Minesweeper {
         if (cell.getStatus() != Cell.CellStatus.REVEALED){
             numRevealed++;
         }
-        cell.revealed();
+        cell.setStatus(Cell.CellStatus.REVEALED);
 
         return cell;
     }
@@ -233,7 +229,6 @@ public class Minesweeper {
     public boolean swept() {
         return numRevealed + numMines == gridSize * gridSize;
     }
-
 
     public Board getBoard() {
         return board;
