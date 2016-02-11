@@ -30,6 +30,7 @@ public class Board {
         return gridSize;
     }
 
+    //Todo: padding for gridSize > 10
     public void print() {
 
         printX();

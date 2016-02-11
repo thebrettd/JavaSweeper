@@ -35,30 +35,6 @@ public class Minesweeper {
         computeAdjacentBombs();
     }
 
-    private void computeAdjacentBombs() {
-        for(int y=0;y<gridSize;y++){
-            for (int x=0;x<gridSize;x++){
-                Cell cell = board.getCell(x,y);
-                if (!cell.getValue().equals("M")){
-                    cell.setValue("" + countAdjacentBombs(x,y));
-                }
-            }
-        }
-    }
-
-    public static void start(Scanner scanner) {
-        Minesweeper game = createGameFromInput(scanner);
-        game.run(scanner);
-    }
-
-    private static Minesweeper createGameFromInput(Scanner scanner) {
-
-        int gridSize = queryUserForInt(scanner, "Enter size of the grid: ");
-        int numBombs = queryUserForInt(scanner, "Enter number of bombs: ");
-
-        return new Minesweeper(gridSize, numBombs);
-    }
-
     private void plantMines() {
         int minesPlanted = 0;
 
@@ -78,11 +54,29 @@ public class Minesweeper {
         }
     }
 
-    private void run(Scanner scanner) {
+    private void computeAdjacentBombs() {
+        for(int y=0;y<gridSize;y++){
+            for (int x=0;x<gridSize;x++){
+                Cell cell = board.getCell(x,y);
+                if (!cell.getValue().equals("M")){
+                    cell.setValue("" + countAdjacentBombs(x,y));
+                }
+            }
+        }
+    }
 
+    public static void start(Scanner scanner) {
+        int gridSize = queryUserForInt(scanner, "Enter size of the grid: ");
+        int numBombs = queryUserForInt(scanner, "Enter number of bombs: ");
+
+        Minesweeper game = new Minesweeper(gridSize, numBombs);
+        game.run(scanner);
+    }
+
+    private void run(Scanner scanner) {
         print();
 
-        while(getStatus().equals(GameStatus.IN_PROGRESS)){
+        while(status.equals(GameStatus.IN_PROGRESS)){
             Move move = Move.getNextMove(scanner, getBoard());
             applyMove(move);
 
@@ -102,7 +96,7 @@ public class Minesweeper {
         getBoard().print();
     }
 
-    private void applyMove(Move move) {
+    public void applyMove(Move move) {
         //Reveal the cell
         Cell clickedCell = revealCell(move.getX(), move.getY());
 
