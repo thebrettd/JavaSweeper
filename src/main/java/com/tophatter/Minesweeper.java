@@ -20,6 +20,7 @@ public class Minesweeper {
     private GameStatus status = GameStatus.IN_PROGRESS;
 
     private int numMines;
+
     private int gridSize;
 
     private int numRevealed;
@@ -96,7 +97,7 @@ public class Minesweeper {
         getBoard().print();
     }
 
-    public void applyMove(Move move) {
+    public Cell applyMove(Move move) {
         //Reveal the cell
         Cell clickedCell = revealCell(move.getX(), move.getY());
 
@@ -118,6 +119,7 @@ public class Minesweeper {
                 }
             }
         }
+        return clickedCell;
     }
 
     private void clickAllAdjacentCells(Move move) {
@@ -231,5 +233,14 @@ public class Minesweeper {
     public GameStatus getStatus() {
         return status;
     }
+
+    public int getNumMines() {
+        return numMines;
+    }
+
+    public void setNumMines(int numMines) {
+        this.numMines = numMines;
+    }
+
 
 }
