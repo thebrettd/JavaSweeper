@@ -185,7 +185,6 @@ public class Minesweeper {
     }
 
     private int countAdjacentBombs(int x, int y) {
-
         int adjacentBombCount = 0;
         List<Move> adjacentCells = computeAllAdjacentCells(x,y);
 
