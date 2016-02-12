@@ -11,7 +11,6 @@ public class Main {
         String choiceInput = scanner.nextLine();
 
         int choice = -1;
-
         while(choice == -1){
             try{
                 choice = Integer.parseInt(choiceInput);

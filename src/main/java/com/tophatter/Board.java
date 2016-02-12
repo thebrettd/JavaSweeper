@@ -67,4 +67,8 @@ public class Board {
     public boolean isValidMove(Move move) {
         return move.getX() > -1 && move.getX() < gridSize && move.getY() > -1 && move.getY() < gridSize;
     }
+
+    public boolean isValidMove(int value) {
+        return value > -1 && value < gridSize;
+    }
 }

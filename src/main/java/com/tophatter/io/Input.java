@@ -25,60 +25,33 @@ public class Input {
     }
 
     public static Move getNextMove(Scanner scanner, Board board) {
-        int xValue = -1;
-        int yValue = -1;
 
-        xValue = getX(scanner, board, xValue);
-
-        yValue = getY(scanner, board, yValue);
+        int xValue = getIntInput(scanner, board, 'x');
+        int yValue = getIntInput(scanner, board, 'y');
 
         return new Move(xValue, yValue);
     }
 
-    private static int getY(Scanner scanner, Board board, int yValue) {
-        boolean validY = false;
-        while(!validY){
-            System.out.println(moveInputPrompt('y',board));
+    private static int getIntInput(Scanner scanner, Board board, char valueName) {
+        int value = -1;
+        boolean validValue = false;
+        while(!validValue){
+            System.out.println(moveInputPrompt(valueName,board));
             String yInput = scanner.nextLine();
             try {
-                yValue = Integer.parseInt(yInput);
+                value = Integer.parseInt(yInput);
 
-                if (isValidMove(yValue,board)){
-                    validY = true;
+                if (board.isValidMove(value)){
+                    validValue = true;
                 }else{
-                    System.out.println(invalidMoveWarning(yValue));
+                    System.out.println(invalidMoveWarning(value));
                 }
             }catch (NumberFormatException e){
-                System.out.println(moveInputPrompt('y',board));
+                System.out.println(moveInputPrompt(valueName,board));
             }
         }
-        return yValue;
+        return value;
     }
-
-    private static int getX(Scanner scanner, Board board, int xValue) {
-        boolean validX = false;
-        while(!validX){
-            System.out.println(moveInputPrompt('x', board));
-            String xInput = scanner.nextLine();
-            try {
-                xValue = Integer.parseInt(xInput);
-
-                if (isValidMove(xValue, board)){
-                    validX = true;
-                }else{
-                    System.out.println(invalidMoveWarning(xValue));
-                }
-            }catch (NumberFormatException e){
-                System.out.println(moveInputPrompt('x',board));
-            }
-        }
-        return xValue;
-    }
-
-    private static boolean isValidMove(int value, Board board) {
-        return value > -1 && value < board.getGridSize();
-    }
-
 
     private static String moveInputPrompt(char input, Board board) {
         return String.format("Enter %s value (Between 0 inclusive and %s exclusive)", input, board.getGridSize());
