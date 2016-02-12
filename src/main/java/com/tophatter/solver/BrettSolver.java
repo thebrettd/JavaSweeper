@@ -15,18 +15,16 @@ public class BrettSolver extends AbstractSolver {
 
     private final static Logger LOGGER = Logger.getLogger(BrettSolver.class.getName());
     private final int gridSize;
-    private final Board board;
 
-    //Array marking all the known mines. Skip these during 4.
+    //Array marking all the known mines. Don't click on these...
     private boolean isMine[][];
 
-    //Array marking squares where all mines are known. Skip these during 2.
+    //Array marking squares where all adjacent mines are known, and we have clicked on all surrounding non-mine cells
     private boolean isDefused[][];
 
     public BrettSolver(Minesweeper game) {
         super(game);
 
-        board = game.getBoard();
         gridSize = board.getGridSize();
 
         isMine = new boolean[gridSize][gridSize];
@@ -60,7 +58,6 @@ public class BrettSolver extends AbstractSolver {
     }
 
     //Search through the board again for cells that now have all their mines marked. Click all around it (but not on the mines!)
-    //Search through the board again for cells that now have all their mines marked. Click all around it (but not on the mines!)
     private void clearDefusedCells() {
         for (int y = 0; y < gridSize - 1; y++) {
             for (int x = 0; x < gridSize - 1; x++) {
@@ -68,25 +65,36 @@ public class BrettSolver extends AbstractSolver {
                 Cell currentCell = board.getCell(x, y);
 
                 if (currentCell.getStatus().equals(Cell.CellStatus.REVEALED)) {
-                    int adjacentMineCount = getAdjacentMineCount(currentCell);
-                    int minesSeen = 0;
+
                     List<Cell> adjacentCells = game.computeAllAdjacentCells(x, y);
-                    for (Cell cell : adjacentCells) {
-                        if (isMine[cell.getX()][cell.getY()]) {
-                            minesSeen++;
-                        }
-                    }
+                    int minesSeen = countAdjacentMines(adjacentCells);
+
+                    int adjacentMineCount = getAdjacentMineCount(currentCell);
                     if (minesSeen == adjacentMineCount) {
-                        for (Cell cell : adjacentCells) {
-                            if (!isMine[cell.getX()][cell.getY()]) {
-                                game.clickCell(cell);
-                            }
-                        }
-                        isDefused[x][y] = true;
+                        clickSafeAdjacentCells(y, x, adjacentCells);
                     }
                 }
             }
         }
+    }
+
+    private void clickSafeAdjacentCells(int y, int x, List<Cell> adjacentCells) {
+        for (Cell cell : adjacentCells) {
+            if (!isMine[cell.getX()][cell.getY()]) {
+                game.clickCell(cell);
+            }
+        }
+        isDefused[x][y] = true;
+    }
+
+    private int countAdjacentMines(List<Cell> adjacentCells) {
+        int minesSeen = 0;
+        for (Cell cell : adjacentCells) {
+            if (isMine[cell.getX()][cell.getY()]) {
+                minesSeen++;
+            }
+        }
+        return minesSeen;
     }
 
     private int getAdjacentMineCount(Cell currentCell) {
@@ -109,28 +117,33 @@ public class BrettSolver extends AbstractSolver {
                 if (currentCell.getStatus().equals(Cell.CellStatus.REVEALED)) {
 
                     int adjacentMineCount = getAdjacentMineCount(currentCell);
-                    int hiddenAdjacentsCount = 0;
 
+                    int hiddenAdjacentsCount = 0;
                     List<Cell> adjacentCells = game.computeAllAdjacentCells(x, y);
                     List<Cell> hiddenAdjacentsList = new ArrayList<Cell>();
-                    for (Cell adjacentCell : adjacentCells) {
-                        if (board.getCell(adjacentCell.getX(), adjacentCell.getY()).getStatus().equals(Cell.CellStatus.HIDDEN)) {
-                            hiddenAdjacentsCount++;
-                            hiddenAdjacentsList.add(adjacentCell);
-                        }
-                    }
+                    hiddenAdjacentsCount = countHiddenAdjacentCells(hiddenAdjacentsCount, adjacentCells, hiddenAdjacentsList);
 
+                    //We have deduced that all the hidden adjacent cells are mines!
                     if (hiddenAdjacentsCount == adjacentMineCount) {
                         //LOGGER.log(Level.FINEST,String.format("Defused all hidden squares touching (%s,%s)", x,y));
                         for (Cell hiddenMine : hiddenAdjacentsList) {
                             isMine[hiddenMine.getX()][hiddenMine.getY()] = true;
-                            isDefused[x][y] = true;
                         }
                     }
                 }
 
             }
         }
+    }
+
+    private int countHiddenAdjacentCells(int hiddenAdjacentsCount, List<Cell> adjacentCells, List<Cell> hiddenAdjacentsList) {
+        for (Cell adjacentCell : adjacentCells) {
+            if (board.getCell(adjacentCell.getX(), adjacentCell.getY()).getStatus().equals(Cell.CellStatus.HIDDEN)) {
+                hiddenAdjacentsCount++;
+                hiddenAdjacentsList.add(adjacentCell);
+            }
+        }
+        return hiddenAdjacentsCount;
     }
 
 
