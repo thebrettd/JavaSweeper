@@ -4,7 +4,7 @@
 
 1. git clone https://github.com/thebrettd/JavaSweeper.git
 2. cd JavaSweeper
-3. mvn install
+3. mvn clean compile assembly:single
 4. cd target
 5. java -jar minesweeper-1.0-SNAPSHOT.jar
 
