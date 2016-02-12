@@ -1,5 +1,6 @@
 package com.tophatter.solver;
 
+import com.tophatter.Cell;
 import com.tophatter.Minesweeper;
 import com.tophatter.Move;
 
@@ -14,8 +15,8 @@ public class RandomSolver extends AbstractSolver {
 
     @Override
     public void doSolve() {
-        Move m = getRandomMove();
-        game.applyMove(m);
+        Cell randomCell = getRandomMove();
+        game.applyMove(randomCell);
     }
 
 }

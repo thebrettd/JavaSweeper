@@ -1,7 +1,7 @@
 package com.tophatter.io;
 
 import com.tophatter.Board;
-import com.tophatter.Move;
+import com.tophatter.Cell;
 
 import java.util.Scanner;
 
@@ -24,12 +24,12 @@ public class Input {
         return input;
     }
 
-    public static Move getNextMove(Scanner scanner, Board board) {
+    public static Cell getCellToClick(Scanner scanner, Board board) {
 
         int xValue = getValidIntInput(scanner, board, 'x');
         int yValue = getValidIntInput(scanner, board, 'y');
 
-        return new Move(xValue, yValue);
+        return new Cell(xValue, yValue);
     }
 
     private static int getValidIntInput(Scanner scanner, Board board, char valueName) {

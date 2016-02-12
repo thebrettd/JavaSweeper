@@ -63,8 +63,8 @@ public class Board {
         myBoard[x][y] = m;
     }
 
-    public boolean isValidMove(Move move) {
-        return move.getX() > -1 && move.getX() < gridSize && move.getY() > -1 && move.getY() < gridSize;
+    public boolean isValidMove(Cell cell) {
+        return cell.getX() > -1 && cell.getX() < gridSize && cell.getY() > -1 && cell.getY() < gridSize;
     }
 
     public boolean isValidMove(int value) {

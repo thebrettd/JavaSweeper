@@ -8,7 +8,7 @@ import java.util.Scanner;
 import java.util.logging.Logger;
 
 import static com.tophatter.io.Input.queryUserForInt;
-import static com.tophatter.io.Input.getNextMove;
+import static com.tophatter.io.Input.getCellToClick;
 
 /**
  * Created by brett on 2/10/16.
@@ -81,8 +81,8 @@ public class Minesweeper {
         print();
 
         while(status.equals(GameStatus.IN_PROGRESS)){
-            Move move = getNextMove(scanner, getBoard());
-            applyMove(move);
+            Cell cellToClick = getCellToClick(scanner, getBoard());
+            applyMove(cellToClick);
 
             switch(getStatus()){
                 case LOSS:
@@ -100,9 +100,9 @@ public class Minesweeper {
         getBoard().print();
     }
 
-    public Cell applyMove(Move move) {
+    public Cell applyMove(Cell cellToClick) {
         //Reveal the cell
-        Cell clickedCell = revealCell(move.getX(), move.getY());
+        Cell clickedCell = revealCell(cellToClick.getX(), cellToClick.getY());
 
         //Update game status
         if (clickedCell.getDisplayValue().equals("M")){
@@ -114,7 +114,7 @@ public class Minesweeper {
 
             if (clickedCell.getDisplayValue().equals("0")){
                 //LOGGER.log(Level.FINEST,"Clicked on a square with no adjacent bombs, automatically clicking all adjacent squares.");
-                clickAllAdjacentCells(move);
+                clickAllAdjacentCells(cellToClick);
 
                 //Check for win conditions after autosweep
                 if (swept()){
@@ -125,14 +125,14 @@ public class Minesweeper {
         return clickedCell;
     }
 
-    private void clickAllAdjacentCells(Move move) {
-        for (Move autoMove: computeAllAdjacentCells(move.getX(),move.getY())){
-            Cell autoCell = board.getCell(autoMove.getX(), autoMove.getY());
+    private void clickAllAdjacentCells(Cell clickedCell) {
+        for (Cell autoClickedCell: computeAllAdjacentCells(clickedCell.getX(),clickedCell.getY())){
+            Cell autoCell = board.getCell(autoClickedCell.getX(), autoClickedCell.getY());
 
             if (autoCell.getStatus().equals(Cell.CellStatus.HIDDEN)){
-                revealCell(autoMove.getX(), autoMove.getY()); //We know its a 0 or we wouldnt be here
+                revealCell(autoClickedCell.getX(), autoClickedCell.getY()); //We know its a 0 or we wouldnt be here
                 if (autoCell.getDisplayValue().equals("0")){
-                    clickAllAdjacentCells(autoMove);
+                    clickAllAdjacentCells(autoClickedCell);
                 }
             }
         }
@@ -148,35 +148,35 @@ public class Minesweeper {
         return cell;
     }
 
-    public List<Move> computeAllAdjacentCells(int x, int y) {
-        List<Move> adjacentCells = new ArrayList<Move>();
+    public List<Cell> computeAllAdjacentCells(int x, int y) {
+        List<Cell> adjacentCells = new ArrayList<Cell>();
 
         //Left column
-        Move autoMove = new Move(x-1, y+1);
+        Cell autoMove = new Cell(x-1, y+1);
         validateMove(adjacentCells, autoMove);
-        autoMove = new Move(x-1, y);
+        autoMove = new Cell(x-1, y);
         validateMove(adjacentCells, autoMove);
-        autoMove = new Move(x-1, y-1);
+        autoMove = new Cell(x-1, y-1);
         validateMove(adjacentCells, autoMove);
 
         //Same column
-        autoMove = new Move(x, y+1);
+        autoMove = new Cell(x, y+1);
         validateMove(adjacentCells, autoMove);
-        autoMove = new Move(x, y-1);
+        autoMove = new Cell(x, y-1);
         validateMove(adjacentCells, autoMove);
 
         //Right column
-        autoMove = new Move(x+1, y+1);
+        autoMove = new Cell(x+1, y+1);
         validateMove(adjacentCells, autoMove);
-        autoMove = new Move(x+1, y);
+        autoMove = new Cell(x+1, y);
         validateMove(adjacentCells, autoMove);
-        autoMove = new Move(x+1, y-1);
+        autoMove = new Cell(x+1, y-1);
         validateMove(adjacentCells, autoMove);
 
         return adjacentCells;
     }
 
-    private void validateMove(List<Move> adjacentCells, Move autoMove) {
+    private void validateMove(List<Cell> adjacentCells, Cell autoMove) {
         if (board.isValidMove(autoMove)){
             adjacentCells.add(autoMove);
         }
@@ -184,9 +184,9 @@ public class Minesweeper {
 
     private int countAdjacentBombs(int x, int y) {
         int adjacentBombCount = 0;
-        List<Move> adjacentCells = computeAllAdjacentCells(x,y);
+        List<Cell> adjacentCells = computeAllAdjacentCells(x,y);
 
-        for (Move adjectCell : adjacentCells){
+        for (Cell adjectCell : adjacentCells){
             if (isBomb(adjectCell.getX(), adjectCell.getY())){
                 adjacentBombCount++;
             }

@@ -2,7 +2,6 @@ package com.tophatter.solver;
 
 import com.tophatter.Cell;
 import com.tophatter.Minesweeper;
-import com.tophatter.Move;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +38,7 @@ public class BrettSolver extends AbstractSolver {
      */
     @Override
     public void doSolve() {
-        Move randomMove = getRandomMove();
+        Cell randomMove = getRandomMove();
 
         if(notABombOrDefused(randomMove)){
             game.applyMove(randomMove);
@@ -53,8 +52,8 @@ public class BrettSolver extends AbstractSolver {
 
     }
 
-    private boolean notABombOrDefused(Move randomMove) {
-        return !isBomb[randomMove.getX()][randomMove.getY()] && !isDefused[randomMove.getX()][randomMove.getY()];
+    private boolean notABombOrDefused(Cell randomCell) {
+        return !isBomb[randomCell.getX()][randomCell.getY()] && !isDefused[randomCell.getX()][randomCell.getY()];
     }
 
     /***
@@ -71,9 +70,9 @@ public class BrettSolver extends AbstractSolver {
                     int adjacentBombCount = Integer.parseInt(currentCell.getDisplayValue());
                     int hiddenAdjacentsCount = 0;
 
-                    List<Move> adjacentCells = game.computeAllAdjacentCells(x,y);
-                    List<Move> hiddenAdjacentsList = new ArrayList<Move>();
-                    for (Move adjacentCell : adjacentCells){
+                    List<Cell> adjacentCells = game.computeAllAdjacentCells(x,y);
+                    List<Cell> hiddenAdjacentsList = new ArrayList<Cell>();
+                    for (Cell adjacentCell : adjacentCells){
                         if (game.getBoard().getCell(adjacentCell.getX(), adjacentCell.getY()).getStatus().equals(Cell.CellStatus.HIDDEN)){
                             hiddenAdjacentsCount++;
                             hiddenAdjacentsList.add(adjacentCell);
@@ -82,7 +81,7 @@ public class BrettSolver extends AbstractSolver {
 
                     if (hiddenAdjacentsCount == adjacentBombCount){
                         //LOGGER.log(Level.FINEST,String.format("Defused all hidden squares touching (%s,%s)", x,y));
-                        for(Move hiddenBomb: hiddenAdjacentsList){
+                        for(Cell hiddenBomb: hiddenAdjacentsList){
                             isBomb[hiddenBomb.getX()][hiddenBomb.getY()] = true;
                             isDefused[x][y] = true;
                         }

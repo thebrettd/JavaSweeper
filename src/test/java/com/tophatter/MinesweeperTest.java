@@ -14,19 +14,19 @@ public class MinesweeperTest {
     @Test
     public void testAllAdjacentCells() throws Exception {
         Minesweeper game = new Minesweeper(5,1);
-        Move move = new Move(0,0);
-        List<Move> moves = game.computeAllAdjacentCells(move.getX(), move.getY());
-        assertTrue(moves.size() == 3);
+        Cell cell = new Cell(0,0);
+        List<Cell> cells = game.computeAllAdjacentCells(cell.getX(), cell.getY());
+        assertTrue(cells.size() == 3);
 
         game.print();
 
-        move = new Move(2,2);
-        moves = game.computeAllAdjacentCells(move.getX(), move.getY());
-        assertTrue(moves.size() == 8);
+        cell = new Cell(2,2);
+        cells = game.computeAllAdjacentCells(cell.getX(), cell.getY());
+        assertTrue(cells.size() == 8);
 
         game = new Minesweeper(10,1);
-        move = new Move(0,8);
-        moves = game.computeAllAdjacentCells(move.getX(), move.getY());
-        assertTrue(moves.size() == 5);
+        cell = new Cell(0,8);
+        cells = game.computeAllAdjacentCells(cell.getX(), cell.getY());
+        assertTrue(cells.size() == 5);
     }
 }
