@@ -28,13 +28,12 @@ public class BrettSolver extends AbstractSolver {
     }
 
     /***
-     * 1.) Start by clicking on a random square.
-     * 2.) Find easy patterns and mark the bombs.
+     * 1.) Start by clicking on a random square (check to make sure it isnt a bomb or already
      *
+     * 2.) Find easy patterns and mark the bombs.
      * Easy pattern - A numbered square who is touching exactly as many HIDDEN squares as its number.
      *
-     * 3.) Click all safe squares around a defused square
-     * 4.) Click on a random non-bomb square.
+     * 3.) Click all safe squares around a defused square.
      *
      */
     @Override
@@ -48,7 +47,7 @@ public class BrettSolver extends AbstractSolver {
         if (game.getStatus().equals(Minesweeper.GameStatus.LOSS)){
             //LOGGER.log(Level.FINEST,"Solver randomly clicked a bomb :(");
         }else{
-            findPatterns();
+            findEasyPatterns();
             clearDefused();
         }
 
@@ -76,6 +75,7 @@ public class BrettSolver extends AbstractSolver {
                                 game.clickCell(cell);
                             }
                         }
+                        isDefused[x][y] = true;
                     }
                 }
             }
@@ -94,7 +94,7 @@ public class BrettSolver extends AbstractSolver {
      * Look at all the revealed squares.
      * If they are touching exactly as many hidden squares as their adjacentBombCount, all the hidden squares are bombs.
      */
-    private void findPatterns() {
+    private void findEasyPatterns() {
         for (int y=0;y<game.getBoard().getGridSize()-1;y++){
             for(int x=0;x<game.getBoard().getGridSize()-1;x++){
 
