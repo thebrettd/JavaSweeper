@@ -7,7 +7,7 @@ package com.tophatter;
 public class Cell {
 
     public enum CellStatus {
-        HIDDEN,REVEALED
+        HIDDEN, REVEALED
     }
 
     private int x;
@@ -17,7 +17,7 @@ public class Cell {
 
     private CellStatus status = CellStatus.HIDDEN;
 
-    public Cell(int x, int y){
+    public Cell(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -31,7 +31,7 @@ public class Cell {
     }
 
     //todo: precompute display status, dont run through this switch every time
-    public String print(){
+    public String print() {
         return status == CellStatus.HIDDEN ? "◼" : displayValue;
     }
 

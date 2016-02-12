@@ -22,15 +22,15 @@ public class BoardTest {
 
         Minesweeper game = new Minesweeper(1, 0);
         assertFalse(game.swept());
-        game.revealCell(0,0);
+        game.revealCell(0, 0);
         assertTrue(game.swept());
 
         game = new Minesweeper(2, 0);
         assertFalse(game.swept());
-        game.revealCell(0,0);
-        game.revealCell(0,1);
-        game.revealCell(1,0);
-        game.revealCell(1,1);
+        game.revealCell(0, 0);
+        game.revealCell(0, 1);
+        game.revealCell(1, 0);
+        game.revealCell(1, 1);
         assertTrue(game.swept());
     }
 
@@ -44,7 +44,7 @@ public class BoardTest {
     public void testGenerator() throws Exception {
         Random generator = new Random();
         //Should see 0-4 in here...
-        for (int i=0;i<50;i++) {
+        for (int i = 0; i < 50; i++) {
             System.out.println(generator.nextInt(5));
         }
     }

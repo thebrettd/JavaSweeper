@@ -29,24 +29,23 @@ public class BrettSolver extends AbstractSolver {
 
     /***
      * 1.) Start by clicking on a random square (check to make sure it isnt a bomb or already
-     *
+     * <p/>
      * 2.) Find easy patterns and mark the bombs.
      * Easy pattern - A numbered square who is touching exactly as many HIDDEN squares as its number.
-     *
+     * <p/>
      * 3.) Click all safe squares around a defused square.
-     *
      */
     @Override
     public void doSolve() {
         Cell randomCell = getRandomCell();
 
-        if(notABombOrDefused(randomCell)){
+        if (notABombOrDefused(randomCell)) {
             game.clickCell(randomCell);
         }
 
-        if (game.getStatus().equals(Minesweeper.GameStatus.LOSS)){
+        if (game.getStatus().equals(Minesweeper.GameStatus.LOSS)) {
             //LOGGER.log(Level.FINEST,"Solver randomly clicked a bomb :(");
-        }else{
+        } else {
             findEasyPatterns();
             clearDefused();
         }
@@ -55,8 +54,8 @@ public class BrettSolver extends AbstractSolver {
 
     //Search through the board again for cells that now have all their bombs marked. Click all around it (but not on the bombs!)
     private void clearDefused() {
-        for (int y=0;y<game.getBoard().getGridSize()-1;y++){
-            for(int x=0;x<game.getBoard().getGridSize()-1;x++) {
+        for (int y = 0; y < game.getBoard().getGridSize() - 1; y++) {
+            for (int x = 0; x < game.getBoard().getGridSize() - 1; x++) {
 
                 Cell currentCell = game.getBoard().getCell(x, y);
 
@@ -95,27 +94,27 @@ public class BrettSolver extends AbstractSolver {
      * If they are touching exactly as many hidden squares as their adjacentBombCount, all the hidden squares are bombs.
      */
     private void findEasyPatterns() {
-        for (int y=0;y<game.getBoard().getGridSize()-1;y++){
-            for(int x=0;x<game.getBoard().getGridSize()-1;x++){
+        for (int y = 0; y < game.getBoard().getGridSize() - 1; y++) {
+            for (int x = 0; x < game.getBoard().getGridSize() - 1; x++) {
 
                 Cell currentCell = game.getBoard().getCell(x, y);
-                if (currentCell.getStatus().equals(Cell.CellStatus.REVEALED)){
+                if (currentCell.getStatus().equals(Cell.CellStatus.REVEALED)) {
 
                     int adjacentBombCount = getAdjacentBombCount(currentCell);
                     int hiddenAdjacentsCount = 0;
 
-                    List<Cell> adjacentCells = game.computeAllAdjacentCells(x,y);
+                    List<Cell> adjacentCells = game.computeAllAdjacentCells(x, y);
                     List<Cell> hiddenAdjacentsList = new ArrayList<Cell>();
-                    for (Cell adjacentCell : adjacentCells){
-                        if (game.getBoard().getCell(adjacentCell.getX(), adjacentCell.getY()).getStatus().equals(Cell.CellStatus.HIDDEN)){
+                    for (Cell adjacentCell : adjacentCells) {
+                        if (game.getBoard().getCell(adjacentCell.getX(), adjacentCell.getY()).getStatus().equals(Cell.CellStatus.HIDDEN)) {
                             hiddenAdjacentsCount++;
                             hiddenAdjacentsList.add(adjacentCell);
                         }
                     }
 
-                    if (hiddenAdjacentsCount == adjacentBombCount){
+                    if (hiddenAdjacentsCount == adjacentBombCount) {
                         //LOGGER.log(Level.FINEST,String.format("Defused all hidden squares touching (%s,%s)", x,y));
-                        for(Cell hiddenBomb: hiddenAdjacentsList){
+                        for (Cell hiddenBomb : hiddenAdjacentsList) {
                             isBomb[hiddenBomb.getX()][hiddenBomb.getY()] = true;
                             isDefused[x][y] = true;
                         }

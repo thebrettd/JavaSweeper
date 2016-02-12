@@ -18,7 +18,7 @@ public class Minesweeper {
     private final static Logger LOGGER = Logger.getLogger(Minesweeper.class.getName());
 
     public enum GameStatus {
-        IN_PROGRESS,LOSS,VICTORY
+        IN_PROGRESS, LOSS, VICTORY
     }
 
     private Board board;
@@ -43,14 +43,14 @@ public class Minesweeper {
         int minesPlanted = 0;
 
         Random generator = new Random();
-        while(minesPlanted < numMines){
+        while (minesPlanted < numMines) {
 
             boolean plantingMine = true;
             while (plantingMine) {
                 int randomX = generator.nextInt(board.getGridSize());
                 int randomY = generator.nextInt(board.getGridSize());
-                if(!(board.getCell(randomX,randomY).getDisplayValue().equals("M"))){
-                    board.putCell(randomX,randomY, new Cell("M"));
+                if (!(board.getCell(randomX, randomY).getDisplayValue().equals("M"))) {
+                    board.putCell(randomX, randomY, new Cell("M"));
                     minesPlanted++;
                     plantingMine = false;
                 }
@@ -59,11 +59,11 @@ public class Minesweeper {
     }
 
     private void computeAdjacentBombs() {
-        for(int y=0;y<gridSize;y++){
-            for (int x=0;x<gridSize;x++){
-                Cell cell = board.getCell(x,y);
-                if (!cell.getDisplayValue().equals("M")){
-                    cell.setDisplayValue(String.format("%s",countAdjacentBombs(x,y)));
+        for (int y = 0; y < gridSize; y++) {
+            for (int x = 0; x < gridSize; x++) {
+                Cell cell = board.getCell(x, y);
+                if (!cell.getDisplayValue().equals("M")) {
+                    cell.setDisplayValue(String.format("%s", countAdjacentBombs(x, y)));
                 }
             }
         }
@@ -80,11 +80,11 @@ public class Minesweeper {
     private void run(Scanner scanner) {
         print();
 
-        while(status.equals(GameStatus.IN_PROGRESS)){
+        while (status.equals(GameStatus.IN_PROGRESS)) {
             Cell cellToClick = getCellToClick(scanner, getBoard());
             clickCell(cellToClick);
 
-            switch(getStatus()){
+            switch (getStatus()) {
                 case LOSS:
                     System.out.println("Sorry, you lost!");
                     break;
@@ -105,19 +105,19 @@ public class Minesweeper {
         Cell clickedCell = revealCell(cellToClick.getX(), cellToClick.getY());
 
         //Update game status
-        if (clickedCell.getDisplayValue().equals("M")){
+        if (clickedCell.getDisplayValue().equals("M")) {
             this.status = GameStatus.LOSS;
-        }else if (swept()){
+        } else if (swept()) {
             this.status = GameStatus.VICTORY;
-        }else{
+        } else {
             //LOGGER.log(Level.FINEST,"Phew, not a bomb!");
 
-            if (clickedCell.getDisplayValue().equals("0")){
+            if (clickedCell.getDisplayValue().equals("0")) {
                 //LOGGER.log(Level.FINEST,"Clicked on a square with no adjacent bombs, automatically clicking all adjacent squares.");
                 clickAllAdjacentCells(cellToClick);
 
                 //Check for win conditions after autosweep
-                if (swept()){
+                if (swept()) {
                     this.status = GameStatus.VICTORY;
                 }
             }
@@ -126,21 +126,21 @@ public class Minesweeper {
     }
 
     private void clickAllAdjacentCells(Cell clickedCell) {
-        for (Cell autoClickedCell: computeAllAdjacentCells(clickedCell.getX(),clickedCell.getY())){
+        for (Cell autoClickedCell : computeAllAdjacentCells(clickedCell.getX(), clickedCell.getY())) {
             Cell autoCell = board.getCell(autoClickedCell.getX(), autoClickedCell.getY());
 
-            if (autoCell.getStatus().equals(Cell.CellStatus.HIDDEN)){
+            if (autoCell.getStatus().equals(Cell.CellStatus.HIDDEN)) {
                 revealCell(autoClickedCell.getX(), autoClickedCell.getY()); //We know its a 0 or we wouldnt be here
-                if (autoCell.getDisplayValue().equals("0")){
+                if (autoCell.getDisplayValue().equals("0")) {
                     clickAllAdjacentCells(autoClickedCell);
                 }
             }
         }
     }
 
-    public Cell revealCell(int x, int y){
-        Cell cell = board.getCell(x,y);
-        if (cell.getStatus() != Cell.CellStatus.REVEALED){
+    public Cell revealCell(int x, int y) {
+        Cell cell = board.getCell(x, y);
+        if (cell.getStatus() != Cell.CellStatus.REVEALED) {
             numRevealed++;
         }
         cell.setStatus(Cell.CellStatus.REVEALED);
@@ -152,42 +152,42 @@ public class Minesweeper {
         List<Cell> adjacentCells = new ArrayList<Cell>();
 
         //Left column
-        Cell possibleAdjacentCell = new Cell(x-1, y+1);
+        Cell possibleAdjacentCell = new Cell(x - 1, y + 1);
         validateCell(adjacentCells, possibleAdjacentCell);
-        possibleAdjacentCell = new Cell(x-1, y);
+        possibleAdjacentCell = new Cell(x - 1, y);
         validateCell(adjacentCells, possibleAdjacentCell);
-        possibleAdjacentCell = new Cell(x-1, y-1);
+        possibleAdjacentCell = new Cell(x - 1, y - 1);
         validateCell(adjacentCells, possibleAdjacentCell);
 
         //Same column
-        possibleAdjacentCell = new Cell(x, y+1);
+        possibleAdjacentCell = new Cell(x, y + 1);
         validateCell(adjacentCells, possibleAdjacentCell);
-        possibleAdjacentCell = new Cell(x, y-1);
+        possibleAdjacentCell = new Cell(x, y - 1);
         validateCell(adjacentCells, possibleAdjacentCell);
 
         //Right column
-        possibleAdjacentCell = new Cell(x+1, y+1);
+        possibleAdjacentCell = new Cell(x + 1, y + 1);
         validateCell(adjacentCells, possibleAdjacentCell);
-        possibleAdjacentCell = new Cell(x+1, y);
+        possibleAdjacentCell = new Cell(x + 1, y);
         validateCell(adjacentCells, possibleAdjacentCell);
-        possibleAdjacentCell = new Cell(x+1, y-1);
+        possibleAdjacentCell = new Cell(x + 1, y - 1);
         validateCell(adjacentCells, possibleAdjacentCell);
 
         return adjacentCells;
     }
 
     private void validateCell(List<Cell> adjacentCells, Cell autoMove) {
-        if (board.isValidCell(autoMove)){
+        if (board.isValidCell(autoMove)) {
             adjacentCells.add(autoMove);
         }
     }
 
     private int countAdjacentBombs(int x, int y) {
         int adjacentBombCount = 0;
-        List<Cell> adjacentCells = computeAllAdjacentCells(x,y);
+        List<Cell> adjacentCells = computeAllAdjacentCells(x, y);
 
-        for (Cell adjectCell : adjacentCells){
-            if (isBomb(adjectCell.getX(), adjectCell.getY())){
+        for (Cell adjectCell : adjacentCells) {
+            if (isBomb(adjectCell.getX(), adjectCell.getY())) {
                 adjacentBombCount++;
             }
         }
@@ -196,7 +196,7 @@ public class Minesweeper {
     }
 
     private boolean isBomb(int x, int y) {
-        Cell cell = board.getCell(x,y);
+        Cell cell = board.getCell(x, y);
         return cell.getDisplayValue().equals("M");
     }
 

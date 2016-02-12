@@ -19,9 +19,9 @@ public class MineSweeperSolver {
 
         StopWatch s = new StopWatch();
         s.start();
-        for (int i=0;i<simulations;i++){
-            Minesweeper game = new Minesweeper(10,10);
-            if (new BrettSolver(game).solve()){
+        for (int i = 0; i < simulations; i++) {
+            Minesweeper game = new Minesweeper(10, 10);
+            if (new BrettSolver(game).solve()) {
                 winCount++;
             }
         }
@@ -29,7 +29,7 @@ public class MineSweeperSolver {
 
         System.out.println(String.format("Solving %s games took %s milliseconds", simulations, s.getTime()));
         System.out.println(String.format("Solved %s games", winCount));
-        System.out.println(String.format("Win percentage: %s", (winCount/simulations) * 100));
+        System.out.println(String.format("Win percentage: %s", (winCount / simulations) * 100));
     }
 
 

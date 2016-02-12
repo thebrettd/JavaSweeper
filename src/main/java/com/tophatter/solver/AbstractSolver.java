@@ -14,14 +14,14 @@ public abstract class AbstractSolver {
 
     protected Minesweeper game;
 
-    public AbstractSolver(Minesweeper game){
+    public AbstractSolver(Minesweeper game) {
         this.game = game;
     }
 
     public abstract void doSolve();
 
-    public boolean solve(){
-        while(game.getStatus() == Minesweeper.GameStatus.IN_PROGRESS){
+    public boolean solve() {
+        while (game.getStatus() == Minesweeper.GameStatus.IN_PROGRESS) {
             doSolve();
         }
 
@@ -30,6 +30,6 @@ public abstract class AbstractSolver {
 
 
     protected Cell getRandomCell() {
-        return new Cell(generator.nextInt(game.getBoard().getGridSize()),generator.nextInt(game.getBoard().getGridSize()));
+        return new Cell(generator.nextInt(game.getBoard().getGridSize()), generator.nextInt(game.getBoard().getGridSize()));
     }
 }
