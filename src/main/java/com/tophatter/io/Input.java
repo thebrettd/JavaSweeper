@@ -41,7 +41,7 @@ public class Input {
             try {
                 value = Integer.parseInt(yInput);
 
-                if (board.isValidMove(value)){
+                if (board.isValidCell(value)){
                     validValue = true;
                 }else{
                     System.out.println(invalidMoveWarning(value));

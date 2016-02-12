@@ -63,11 +63,13 @@ public class Board {
         myBoard[x][y] = m;
     }
 
-    public boolean isValidMove(Cell cell) {
+    //Make sure these computed cell coordinates are actually on the board
+    public boolean isValidCell(Cell cell) {
         return cell.getX() > -1 && cell.getX() < gridSize && cell.getY() > -1 && cell.getY() < gridSize;
     }
 
-    public boolean isValidMove(int value) {
+    //Make sure this computed value is within the range of the board
+    public boolean isValidCell(int value) {
         return value > -1 && value < gridSize;
     }
 }

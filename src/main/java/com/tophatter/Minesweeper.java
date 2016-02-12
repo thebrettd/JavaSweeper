@@ -152,32 +152,32 @@ public class Minesweeper {
         List<Cell> adjacentCells = new ArrayList<Cell>();
 
         //Left column
-        Cell autoMove = new Cell(x-1, y+1);
-        validateMove(adjacentCells, autoMove);
-        autoMove = new Cell(x-1, y);
-        validateMove(adjacentCells, autoMove);
-        autoMove = new Cell(x-1, y-1);
-        validateMove(adjacentCells, autoMove);
+        Cell possibleAdjacentCell = new Cell(x-1, y+1);
+        validateCell(adjacentCells, possibleAdjacentCell);
+        possibleAdjacentCell = new Cell(x-1, y);
+        validateCell(adjacentCells, possibleAdjacentCell);
+        possibleAdjacentCell = new Cell(x-1, y-1);
+        validateCell(adjacentCells, possibleAdjacentCell);
 
         //Same column
-        autoMove = new Cell(x, y+1);
-        validateMove(adjacentCells, autoMove);
-        autoMove = new Cell(x, y-1);
-        validateMove(adjacentCells, autoMove);
+        possibleAdjacentCell = new Cell(x, y+1);
+        validateCell(adjacentCells, possibleAdjacentCell);
+        possibleAdjacentCell = new Cell(x, y-1);
+        validateCell(adjacentCells, possibleAdjacentCell);
 
         //Right column
-        autoMove = new Cell(x+1, y+1);
-        validateMove(adjacentCells, autoMove);
-        autoMove = new Cell(x+1, y);
-        validateMove(adjacentCells, autoMove);
-        autoMove = new Cell(x+1, y-1);
-        validateMove(adjacentCells, autoMove);
+        possibleAdjacentCell = new Cell(x+1, y+1);
+        validateCell(adjacentCells, possibleAdjacentCell);
+        possibleAdjacentCell = new Cell(x+1, y);
+        validateCell(adjacentCells, possibleAdjacentCell);
+        possibleAdjacentCell = new Cell(x+1, y-1);
+        validateCell(adjacentCells, possibleAdjacentCell);
 
         return adjacentCells;
     }
 
-    private void validateMove(List<Cell> adjacentCells, Cell autoMove) {
-        if (board.isValidMove(autoMove)){
+    private void validateCell(List<Cell> adjacentCells, Cell autoMove) {
+        if (board.isValidCell(autoMove)){
             adjacentCells.add(autoMove);
         }
     }
