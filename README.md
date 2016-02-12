@@ -11,8 +11,10 @@
 ## Command Line Game
 
 Pretty self-explanatory. Enter a grid size N (will generate an NxN square grid) and the desired number of mines.
-You will be prompted for the 
-Game ends when you enter the coordinates of a mines, or all non-mine squares are revealed.
+
+You will be prompted for the x and y coordinates of the cell you want to click.
+
+Game ends when you enter the coordinates of a mine, or all non-mine squares are revealed.
 
 If you reveal a square with 0 adjacent mines, the game will automatically reveal all adjacent cells.
 
