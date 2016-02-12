@@ -10,21 +10,21 @@ public class Cell {
         HIDDEN,REVEALED
     }
 
-    private String value;
+    private String displayValue;
 
     private CellStatus status = CellStatus.HIDDEN;
 
-    public Cell(String value) {
-        this.value = value;
+    public Cell(String displayValue) {
+        this.displayValue = displayValue;
     }
 
-    public String getValue() {
-        return value;
+    public String getDisplayValue() {
+        return displayValue;
     }
 
     //todo: precompute display status, dont run through this switch every time
     public String print(){
-        return status == CellStatus.HIDDEN ? "◼" : value;
+        return status == CellStatus.HIDDEN ? "◼" : displayValue;
     }
 
     public CellStatus getStatus() {
@@ -35,7 +35,7 @@ public class Cell {
         this.status = status;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setDisplayValue(String displayValue) {
+        this.displayValue = displayValue;
     }
 }

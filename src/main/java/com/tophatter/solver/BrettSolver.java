@@ -6,7 +6,6 @@ import com.tophatter.Move;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -69,7 +68,7 @@ public class BrettSolver extends AbstractSolver {
                 Cell currentCell = game.getBoard().getCell(x, y);
                 if (currentCell.getStatus().equals(Cell.CellStatus.REVEALED)){
 
-                    int adjacentBombCount = Integer.parseInt(currentCell.getValue());
+                    int adjacentBombCount = Integer.parseInt(currentCell.getDisplayValue());
                     int hiddenAdjacentsCount = 0;
 
                     List<Move> adjacentCells = game.computeAllAdjacentCells(x,y);

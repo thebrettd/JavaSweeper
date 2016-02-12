@@ -32,16 +32,15 @@ public class Board {
 
     //Todo: padding for gridSize > 10
     public void print() {
-
         printX();
 
         for (int y=gridSize-1;y>-1;y--){
-            System.out.print("" + y + "|");
+            System.out.print(String.format("%s|",y));
             for (int x=0;x<gridSize;x++){
                 Cell currCell = myBoard[x][y];
-                System.out.print(currCell.print() + "|");
+                System.out.print(String.format("%s|", currCell.print()));
             }
-            System.out.print("" + y);
+            System.out.print(String.format("%s", y));
             System.out.println();
         }
 
@@ -51,7 +50,7 @@ public class Board {
     private void printX() {
         System.out.print(" -");
         for (int i=0;i<gridSize;i++){
-            System.out.print("" + i + "-");
+            System.out.print(String.format("%s-",i));
         }
         System.out.println();
     }

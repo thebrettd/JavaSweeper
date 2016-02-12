@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static com.tophatter.io.Input.queryUserForInt;
@@ -50,7 +49,7 @@ public class Minesweeper {
             while (plantingMine) {
                 int randomX = generator.nextInt(board.getGridSize());
                 int randomY = generator.nextInt(board.getGridSize());
-                if(!(board.getCell(randomX,randomY).getValue().equals("M"))){
+                if(!(board.getCell(randomX,randomY).getDisplayValue().equals("M"))){
                     board.putCell(randomX,randomY, new Cell("M"));
                     minesPlanted++;
                     plantingMine = false;
@@ -63,8 +62,8 @@ public class Minesweeper {
         for(int y=0;y<gridSize;y++){
             for (int x=0;x<gridSize;x++){
                 Cell cell = board.getCell(x,y);
-                if (!cell.getValue().equals("M")){
-                    cell.setValue("" + countAdjacentBombs(x,y));
+                if (!cell.getDisplayValue().equals("M")){
+                    cell.setDisplayValue("" + countAdjacentBombs(x,y));
                 }
             }
         }
@@ -106,14 +105,14 @@ public class Minesweeper {
         Cell clickedCell = revealCell(move.getX(), move.getY());
 
         //Update game status
-        if (clickedCell.getValue().equals("M")){
+        if (clickedCell.getDisplayValue().equals("M")){
             this.status = GameStatus.LOSS;
         }else if (swept()){
             this.status = GameStatus.VICTORY;
         }else{
             //LOGGER.log(Level.FINEST,"Phew, not a bomb!");
 
-            if (clickedCell.getValue().equals("0")){
+            if (clickedCell.getDisplayValue().equals("0")){
                 //LOGGER.log(Level.FINEST,"Clicked on a square with no adjacent bombs, automatically clicking all adjacent squares.");
                 clickAllAdjacentCells(move);
 
@@ -132,7 +131,7 @@ public class Minesweeper {
 
             if (autoCell.getStatus().equals(Cell.CellStatus.HIDDEN)){
                 revealCell(autoMove.getX(), autoMove.getY()); //We know its a 0 or we wouldnt be here
-                if (autoCell.getValue().equals("0")){
+                if (autoCell.getDisplayValue().equals("0")){
                     clickAllAdjacentCells(autoMove);
                 }
             }
@@ -198,7 +197,7 @@ public class Minesweeper {
 
     private boolean isBomb(int x, int y) {
         Cell cell = board.getCell(x,y);
-        return cell.getValue().equals("M");
+        return cell.getDisplayValue().equals("M");
     }
 
     public boolean swept() {
