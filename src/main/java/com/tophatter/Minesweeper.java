@@ -63,7 +63,7 @@ public class Minesweeper {
             for (int x=0;x<gridSize;x++){
                 Cell cell = board.getCell(x,y);
                 if (!cell.getDisplayValue().equals("M")){
-                    cell.setDisplayValue("" + countAdjacentBombs(x,y));
+                    cell.setDisplayValue(String.format("%s",countAdjacentBombs(x,y)));
                 }
             }
         }
