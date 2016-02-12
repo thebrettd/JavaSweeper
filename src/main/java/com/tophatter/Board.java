@@ -2,8 +2,6 @@ package com.tophatter;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Random;
-
 /**
  * Created by brett on 2/10/16.
  */
@@ -33,32 +31,33 @@ public class Board {
     }
 
     public void print() {
+        //How wide we want each cell, based on the maximum string length of the indices
         int desiredWidth = String.valueOf(gridSize - 1).length();
 
-        printX(desiredWidth);
+        printXIndices(desiredWidth);
 
         for (int y = gridSize - 1; y > -1; y--) {
-            int yIndexLength = String.valueOf(y).length();
-            System.out.print(String.format("%s%s|", y, StringUtils.repeat(" ", desiredWidth - yIndexLength)));
+            int yIndexWidth = String.valueOf(y).length();
+            System.out.print(String.format("%s%s|", y, StringUtils.repeat(" ", desiredWidth - yIndexWidth)));
             for (int x = 0; x < gridSize; x++) {
                 Cell currCell = myBoard[x][y];
                 System.out.print(String.format("%s%s|", currCell.print(), StringUtils.repeat(" ", desiredWidth - 1)));
             }
-            System.out.print(String.format("%s", y));
-            System.out.println();
+            System.out.println(String.format("%s", y));
         }
 
-        printX(desiredWidth);
+        printXIndices(desiredWidth);
     }
 
-    private void printX(int desiredWidth) {
+    private void printXIndices(int desiredWidth) {
 
+        //Padding for the space above Y indices
         System.out.print(String.format("%s|", StringUtils.repeat(" ", desiredWidth)));
 
-        //Print the index and padding
+        //Print the x indices and padding
         for (int x = 0; x < gridSize; x++) {
-            int indexLength = String.valueOf(x).length();
-            System.out.print(String.format("%s%s|", x, StringUtils.repeat(" ", desiredWidth - indexLength)));
+            int currentIndexWidth = String.valueOf(x).length();
+            System.out.print(String.format("%s%s|", x, StringUtils.repeat(" ", desiredWidth - currentIndexWidth)));
         }
         System.out.println();
     }
