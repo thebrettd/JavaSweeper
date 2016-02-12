@@ -42,7 +42,7 @@ public class BrettSolver extends AbstractSolver {
     public void doSolve() {
         Move randomMove = getRandomMove();
 
-        if(!isBomb[randomMove.getX()][randomMove.getY()]){
+        if(notABombOrDefused(randomMove)){
             game.applyMove(randomMove);
         }
 
@@ -52,6 +52,10 @@ public class BrettSolver extends AbstractSolver {
             findPatterns();
         }
 
+    }
+
+    private boolean notABombOrDefused(Move randomMove) {
+        return !isBomb[randomMove.getX()][randomMove.getY()] && !isDefused[randomMove.getX()][randomMove.getY()];
     }
 
     /***
@@ -64,7 +68,6 @@ public class BrettSolver extends AbstractSolver {
 
                 Cell currentCell = game.getBoard().getCell(x, y);
                 if (currentCell.getStatus().equals(Cell.CellStatus.REVEALED)){
-
 
                     int adjacentBombCount = Integer.parseInt(currentCell.getValue());
                     int hiddenAdjacentsCount = 0;

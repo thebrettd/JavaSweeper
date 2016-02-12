@@ -1,5 +1,7 @@
 package com.tophatter;
 
+import com.tophatter.io.Input;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -8,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static com.tophatter.io.Input.queryUserForInt;
+import static com.tophatter.io.Input.getNextMove;
 
 /**
  * Created by brett on 2/10/16.
@@ -24,9 +27,7 @@ public class Minesweeper {
     private GameStatus status = GameStatus.IN_PROGRESS;
 
     private int numMines;
-
     private int gridSize;
-
     private int numRevealed;
 
     public Minesweeper(int gridSize, int numMines) {
@@ -82,7 +83,7 @@ public class Minesweeper {
         print();
 
         while(status.equals(GameStatus.IN_PROGRESS)){
-            Move move = Move.getNextMove(scanner, getBoard());
+            Move move = getNextMove(scanner, getBoard());
             applyMove(move);
 
             switch(getStatus()){
@@ -152,19 +153,21 @@ public class Minesweeper {
     public List<Move> computeAllAdjacentCells(int x, int y) {
         List<Move> adjacentCells = new ArrayList<Move>();
 
+        //Left column
         Move autoMove = new Move(x-1, y+1);
         validateMove(adjacentCells, autoMove);
-
         autoMove = new Move(x-1, y);
         validateMove(adjacentCells, autoMove);
         autoMove = new Move(x-1, y-1);
         validateMove(adjacentCells, autoMove);
 
+        //Same column
         autoMove = new Move(x, y+1);
         validateMove(adjacentCells, autoMove);
         autoMove = new Move(x, y-1);
         validateMove(adjacentCells, autoMove);
 
+        //Right column
         autoMove = new Move(x+1, y+1);
         validateMove(adjacentCells, autoMove);
         autoMove = new Move(x+1, y);
@@ -176,52 +179,26 @@ public class Minesweeper {
     }
 
     private void validateMove(List<Move> adjacentCells, Move autoMove) {
-        if (Move.isValidMove(autoMove, board)){
+        if (board.isValidMove(autoMove)){
             adjacentCells.add(autoMove);
         }
     }
 
     private int countAdjacentBombs(int x, int y) {
+
         int adjacentBombCount = 0;
+        List<Move> adjacentCells = computeAllAdjacentCells(x,y);
 
-        if(isBomb(x-1,y)){
-            adjacentBombCount++;
-        }
-        if(isBomb(x-1,y-1)){
-            adjacentBombCount++;
-        }
-        if(isBomb(x-1,y+1)){
-            adjacentBombCount++;
-        }
-
-        if(isBomb(x,y-1)){
-            adjacentBombCount++;
-        }
-        if(isBomb(x,y+1)){
-            adjacentBombCount++;
-        }
-
-
-        if(isBomb(x+1,y)){
-            adjacentBombCount++;
-        }
-        if(isBomb(x+1,y+1)){
-            adjacentBombCount++;
-        }
-
-        if(isBomb(x+1,y-1)){
-            adjacentBombCount++;
+        for (Move adjectCell : adjacentCells){
+            if (isBomb(adjectCell.getX(), adjectCell.getY())){
+                adjacentBombCount++;
+            }
         }
 
         return adjacentBombCount;
     }
 
     private boolean isBomb(int x, int y) {
-        //Check for array index out of bounds..
-        if ((x == -1) || (y == -1) || (x > board.getGridSize()-1) || (y > board.getGridSize()-1) ){
-            return false;
-        }
-
         Cell cell = board.getCell(x,y);
         return cell.getValue().equals("M");
     }
