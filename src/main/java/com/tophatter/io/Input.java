@@ -12,9 +12,9 @@ public class Input {
 
     public static int queryUserForInt(Scanner scanner, String prompt) {
         int input = -1;
-        System.out.println(prompt);
-        String gridInput = scanner.nextLine();
         while(input == -1) {
+            System.out.println(prompt);
+            String gridInput = scanner.nextLine();
             try {
                 input = Integer.parseInt(gridInput);
             } catch (NumberFormatException e) {
@@ -26,13 +26,13 @@ public class Input {
 
     public static Move getNextMove(Scanner scanner, Board board) {
 
-        int xValue = getIntInput(scanner, board, 'x');
-        int yValue = getIntInput(scanner, board, 'y');
+        int xValue = getValidIntInput(scanner, board, 'x');
+        int yValue = getValidIntInput(scanner, board, 'y');
 
         return new Move(xValue, yValue);
     }
 
-    private static int getIntInput(Scanner scanner, Board board, char valueName) {
+    private static int getValidIntInput(Scanner scanner, Board board, char valueName) {
         int value = -1;
         boolean validValue = false;
         while(!validValue){
