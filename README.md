@@ -23,7 +23,7 @@ For each of play, x and y indices are printed along the perimeter of the grid.
 Two solvers are included.
 Both solvers run in a loop.
 
-Per specfication, the number of simulations is hardcoded to 1000 via the constant MineSweeperSolver.simulations
+Per specification, the number of simulations is hardcoded to 1000 via the constant MineSweeperSolver.simulations
 
 ### Brett Solver
 Three phase solver 
@@ -55,9 +55,10 @@ This solver achieves an impressive .027% solve rate over 100,000 simulations.
 >Solved 27 games
 >Win percentage: 0.027
 
-## Depdencies
-Maven is used for dependency management. 
+## Dependencies
 
+* Java 1.5 or later
+* Maven for dependency management. 
 * JUnit is used for Unit Testing.
 * Apache commons-lang3 is used for StopWatch and StringUtils classes.
 
