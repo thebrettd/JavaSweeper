@@ -36,7 +36,7 @@ public class Minesweeper {
         board = new Board(gridSize);
 
         plantMines();
-        computeAdjacentBombs();
+        computeAdjacentMiness();
     }
 
     private void plantMines() {
@@ -58,12 +58,12 @@ public class Minesweeper {
         }
     }
 
-    private void computeAdjacentBombs() {
+    private void computeAdjacentMiness() {
         for (int y = 0; y < gridSize; y++) {
             for (int x = 0; x < gridSize; x++) {
                 Cell cell = board.getCell(x, y);
                 if (!cell.getDisplayValue().equals("M")) {
-                    cell.setDisplayValue(String.format("%s", countAdjacentBombs(x, y)));
+                    cell.setDisplayValue(String.format("%s", countAdjacentMines(x, y)));
                 }
             }
         }
@@ -71,9 +71,9 @@ public class Minesweeper {
 
     public static void start(Scanner scanner) {
         int gridSize = queryUserForInt(scanner, "Enter size of the grid: ");
-        int numBombs = queryUserForInt(scanner, "Enter number of bombs: ");
+        int numMines = queryUserForInt(scanner, "Enter number of mines: ");
 
-        Minesweeper game = new Minesweeper(gridSize, numBombs);
+        Minesweeper game = new Minesweeper(gridSize, numMines);
         game.run(scanner);
     }
 
@@ -110,10 +110,10 @@ public class Minesweeper {
         } else if (swept()) {
             this.status = GameStatus.VICTORY;
         } else {
-            //LOGGER.log(Level.FINEST,"Phew, not a bomb!");
+            //LOGGER.log(Level.FINEST,"Phew, not a mine!");
 
             if (clickedCell.getDisplayValue().equals("0")) {
-                //LOGGER.log(Level.FINEST,"Clicked on a square with no adjacent bombs, automatically clicking all adjacent squares.");
+                //LOGGER.log(Level.FINEST,"Clicked on a square with no adjacent mine, automatically clicking all adjacent squares.");
                 clickAllAdjacentCells(cellToClick);
 
                 //Check for win conditions after autosweep
@@ -182,20 +182,20 @@ public class Minesweeper {
         }
     }
 
-    private int countAdjacentBombs(int x, int y) {
-        int adjacentBombCount = 0;
+    private int countAdjacentMines(int x, int y) {
+        int adjacentMineCount = 0;
         List<Cell> adjacentCells = computeAllAdjacentCells(x, y);
 
         for (Cell adjectCell : adjacentCells) {
-            if (isBomb(adjectCell.getX(), adjectCell.getY())) {
-                adjacentBombCount++;
+            if (isMine(adjectCell.getX(), adjectCell.getY())) {
+                adjacentMineCount++;
             }
         }
 
-        return adjacentBombCount;
+        return adjacentMineCount;
     }
 
-    private boolean isBomb(int x, int y) {
+    private boolean isMine(int x, int y) {
         Cell cell = board.getCell(x, y);
         return cell.getDisplayValue().equals("M");
     }
