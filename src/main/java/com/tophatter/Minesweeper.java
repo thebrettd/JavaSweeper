@@ -1,6 +1,5 @@
 package com.tophatter;
 
-import com.tophatter.io.Input;
 
 import java.util.ArrayList;
 import java.util.List;
