@@ -29,7 +29,7 @@ public abstract class AbstractSolver {
     }
 
 
-    protected Cell getRandomMove() {
+    protected Cell getRandomCell() {
         return new Cell(generator.nextInt(game.getBoard().getGridSize()),generator.nextInt(game.getBoard().getGridSize()));
     }
 }

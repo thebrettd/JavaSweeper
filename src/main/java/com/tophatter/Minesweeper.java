@@ -82,7 +82,7 @@ public class Minesweeper {
 
         while(status.equals(GameStatus.IN_PROGRESS)){
             Cell cellToClick = getCellToClick(scanner, getBoard());
-            applyMove(cellToClick);
+            clickCell(cellToClick);
 
             switch(getStatus()){
                 case LOSS:
@@ -100,7 +100,7 @@ public class Minesweeper {
         getBoard().print();
     }
 
-    public Cell applyMove(Cell cellToClick) {
+    public Cell clickCell(Cell cellToClick) {
         //Reveal the cell
         Cell clickedCell = revealCell(cellToClick.getX(), cellToClick.getY());
 

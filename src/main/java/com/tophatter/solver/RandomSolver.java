@@ -14,8 +14,8 @@ public class RandomSolver extends AbstractSolver {
 
     @Override
     public void doSolve() {
-        Cell randomCell = getRandomMove();
-        game.applyMove(randomCell);
+        Cell randomCell = getRandomCell();
+        game.clickCell(randomCell);
     }
 
 }
