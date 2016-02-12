@@ -1,6 +1,7 @@
 package com.tophatter;
 
 
+import com.tophatter.solver.BrettSolver;
 import com.tophatter.solver.RandomSolver;
 import org.apache.commons.lang3.time.StopWatch;
 
@@ -18,7 +19,7 @@ public class MineSweeperSolver {
         s.start();
         for (int i=0;i<1000;i++){
             Minesweeper game = new Minesweeper(10,10);
-            if (new RandomSolver(game).solve()){
+            if (new BrettSolver(game).solve()){
                 winCount++;
             }
         }
@@ -26,6 +27,7 @@ public class MineSweeperSolver {
 
         System.out.println(String.format("Solving 1000 games took %s milliseconds", s.getTime()));
         System.out.println(String.format("Solved %s games", winCount));
+        System.out.println(String.format("Win percentage: %s", (winCount/1000.0) * 100));
     }
 
 

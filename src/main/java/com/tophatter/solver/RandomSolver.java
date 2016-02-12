@@ -14,8 +14,8 @@ public class RandomSolver extends AbstractSolver {
 
     @Override
     public void doSolve() {
-        Move m = new Move(generator.nextInt(game.getBoard().getGridSize()),generator.nextInt(game.getBoard().getGridSize()));
+        Move m = getRandomMove();
         game.applyMove(m);
-
     }
+
 }

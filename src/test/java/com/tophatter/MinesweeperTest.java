@@ -15,18 +15,18 @@ public class MinesweeperTest {
     public void testAllAdjacentCells() throws Exception {
         Minesweeper game = new Minesweeper(5,1);
         Move move = new Move(0,0);
-        List<Move> moves = game.computeAllAdjacentCells(move);
+        List<Move> moves = game.computeAllAdjacentCells(move.getX(), move.getY());
         assertTrue(moves.size() == 3);
 
         game.print();
 
         move = new Move(2,2);
-        moves = game.computeAllAdjacentCells(move);
+        moves = game.computeAllAdjacentCells(move.getX(), move.getY());
         assertTrue(moves.size() == 8);
 
         game = new Minesweeper(10,1);
         move = new Move(0,8);
-        moves = game.computeAllAdjacentCells(move);
+        moves = game.computeAllAdjacentCells(move.getX(), move.getY());
         assertTrue(moves.size() == 5);
     }
 }

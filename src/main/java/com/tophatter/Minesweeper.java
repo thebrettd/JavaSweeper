@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static com.tophatter.io.Input.queryUserForInt;
 
@@ -11,6 +13,8 @@ import static com.tophatter.io.Input.queryUserForInt;
  * Created by brett on 2/10/16.
  */
 public class Minesweeper {
+
+    private final static Logger LOGGER = Logger.getLogger(Minesweeper.class.getName());
 
     public enum GameStatus {
         IN_PROGRESS,LOSS,VICTORY
@@ -107,10 +111,10 @@ public class Minesweeper {
         }else if (swept()){
             this.status = GameStatus.VICTORY;
         }else{
-            System.out.println("Phew, not a bomb!");
+            //LOGGER.log(Level.FINEST,"Phew, not a bomb!");
 
             if (clickedCell.getValue().equals("0")){
-                System.out.println("Clicked on a square with no adjacent bombs, automatically clicking all adjacent squares.");
+                //LOGGER.log(Level.FINEST,"Clicked on a square with no adjacent bombs, automatically clicking all adjacent squares.");
                 clickAllAdjacentCells(move);
 
                 //Check for win conditions after autosweep
@@ -123,7 +127,7 @@ public class Minesweeper {
     }
 
     private void clickAllAdjacentCells(Move move) {
-        for (Move autoMove: computeAllAdjacentCells(move)){
+        for (Move autoMove: computeAllAdjacentCells(move.getX(),move.getY())){
             Cell autoCell = board.getCell(autoMove.getX(), autoMove.getY());
 
             if (autoCell.getStatus().equals(Cell.CellStatus.HIDDEN)){
@@ -145,27 +149,27 @@ public class Minesweeper {
         return cell;
     }
 
-    public List<Move> computeAllAdjacentCells(Move move) {
+    public List<Move> computeAllAdjacentCells(int x, int y) {
         List<Move> adjacentCells = new ArrayList<Move>();
 
-        Move autoMove = new Move(move.getX()-1, move.getY()+1);
+        Move autoMove = new Move(x-1, y+1);
         validateMove(adjacentCells, autoMove);
 
-        autoMove = new Move(move.getX()-1, move.getY());
+        autoMove = new Move(x-1, y);
         validateMove(adjacentCells, autoMove);
-        autoMove = new Move(move.getX()-1, move.getY()-1);
-        validateMove(adjacentCells, autoMove);
-
-        autoMove = new Move(move.getX(), move.getY()+1);
-        validateMove(adjacentCells, autoMove);
-        autoMove = new Move(move.getX(), move.getY()-1);
+        autoMove = new Move(x-1, y-1);
         validateMove(adjacentCells, autoMove);
 
-        autoMove = new Move(move.getX()+1, move.getY()+1);
+        autoMove = new Move(x, y+1);
         validateMove(adjacentCells, autoMove);
-        autoMove = new Move(move.getX()+1, move.getY());
+        autoMove = new Move(x, y-1);
         validateMove(adjacentCells, autoMove);
-        autoMove = new Move(move.getX()+1, move.getY()-1);
+
+        autoMove = new Move(x+1, y+1);
+        validateMove(adjacentCells, autoMove);
+        autoMove = new Move(x+1, y);
+        validateMove(adjacentCells, autoMove);
+        autoMove = new Move(x+1, y-1);
         validateMove(adjacentCells, autoMove);
 
         return adjacentCells;

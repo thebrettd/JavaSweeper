@@ -1,6 +1,7 @@
 package com.tophatter.solver;
 
 import com.tophatter.Minesweeper;
+import com.tophatter.Move;
 
 import java.util.Random;
 
@@ -28,5 +29,7 @@ public abstract class AbstractSolver {
     }
 
 
-
+    protected Move getRandomMove() {
+        return new Move(generator.nextInt(game.getBoard().getGridSize()),generator.nextInt(game.getBoard().getGridSize()));
+    }
 }
