@@ -12,7 +12,7 @@ public class Input {
 
     public static int queryUserForInt(Scanner scanner, String prompt) {
         int input = -1;
-        while(input == -1) {
+        while (input == -1) {
             System.out.println(prompt);
             String gridInput = scanner.nextLine();
             try {
@@ -35,19 +35,19 @@ public class Input {
     private static int getValidIntInput(Scanner scanner, Board board, char valueName) {
         int value = -1;
         boolean validValue = false;
-        while(!validValue){
-            System.out.println(moveInputPrompt(valueName,board));
+        while (!validValue) {
+            System.out.println(moveInputPrompt(valueName, board));
             String yInput = scanner.nextLine();
             try {
                 value = Integer.parseInt(yInput);
 
-                if (board.isValidCell(value)){
+                if (board.isValidCell(value)) {
                     validValue = true;
-                }else{
+                } else {
                     System.out.println(invalidMoveWarning(value));
                 }
-            }catch (NumberFormatException e){
-                System.out.println(moveInputPrompt(valueName,board));
+            } catch (NumberFormatException e) {
+                System.out.println(moveInputPrompt(valueName, board));
             }
         }
         return value;
