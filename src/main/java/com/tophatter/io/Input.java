@@ -10,6 +10,22 @@ import java.util.Scanner;
  */
 public class Input {
 
+    public static int getMenuChoice(Scanner scanner) {
+        int choice = -1;
+        while (!(choice == 1 || choice == 2)) {
+            String choiceInput = scanner.nextLine();
+            try {
+                choice = Integer.parseInt(choiceInput);
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter 1 or 2");
+            }
+            if (!(choice == 1 || choice == 2)) {
+                System.out.println(String.format("Invalid entry detected (%s), please enter 1 or 2", choice));
+            }
+        }
+        return choice;
+    }
+
     public static int queryUserForInt(Scanner scanner, String prompt) {
         int input = -1;
         while (input == -1) {
