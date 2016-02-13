@@ -20,6 +20,8 @@ If you reveal a square with 0 adjacent mines, the game will automatically reveal
 
 For each of play, x and y indices are printed along the perimeter of the grid.
 
+Logging and all superfluous output is commented out, for performance reason.
+
 ## Solver
 
 Code for two solvers are included - but the program is hardcoded to use BrettSolver.

@@ -47,6 +47,13 @@ public class BrettSolver extends AbstractSolver {
             game.clickCell(randomCell);
         }
 
+        /*
+        You can uncomment these lines, to watch the solver play - fun!
+
+        board.print();
+        System.out.println();
+        */
+
         if (game.getStatus().equals(Minesweeper.GameStatus.LOSS)) {
             //LOGGER.log(Level.FINEST,"Solver randomly clicked a mine :(");
         } else {
