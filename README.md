@@ -39,6 +39,8 @@ This solver achieves a solve rate of 62.7% over 100,000 games.
 >Solved 63017 games
 >Win percentage: 63.017
 
+This algorithm has a time complexity of o(n^2) where n is the size of the grid and a space complexity of o(n).
+
 The solver loops through the following phases
 
 #### Click a random square and pray.
