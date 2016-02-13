@@ -1,6 +1,5 @@
 package com.tophatter.solver;
 
-import com.tophatter.Board;
 import com.tophatter.Cell;
 import com.tophatter.Minesweeper;
 

@@ -22,8 +22,9 @@ For each of play, x and y indices are printed along the perimeter of the grid.
 
 ## Solver
 
-Two solvers are included.
-Both solvers run in a loop.
+Code for two solvers are included - but the program is hardcoded to use BrettSolver.
+
+In a real world scenario, I would use dependency injection to control which solver is used at runtime.
 
 Per specification, the number of simulations is hardcoded to 1000 via the constant MineSweeperSolver.simulations
 
@@ -35,6 +36,8 @@ This solver achieves a solve rate of 62.7% over 100,000 games.
 >Solving 100000.0 games took 126341 milliseconds
 >Solved 63017 games
 >Win percentage: 63.017
+
+The solver loops through the following phases
 
 #### Click a random square and pray.
 To start the process, we must first click on a random square. Once a simulation is started, we skip over known mines or 
