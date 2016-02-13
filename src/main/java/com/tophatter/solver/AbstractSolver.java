@@ -24,6 +24,11 @@ public abstract class AbstractSolver {
 
     public abstract void doSolve();
 
+    /***
+     * Loop until the game is no longer in progress.
+     * Return true for VICTORY and false for LOSS
+     * @return
+     */
     public boolean solve() {
         while (game.getStatus() == Minesweeper.GameStatus.IN_PROGRESS) {
             doSolve();
