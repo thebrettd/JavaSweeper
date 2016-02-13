@@ -1,6 +1,8 @@
 package com.tophatter;
 
 
+import com.tophatter.io.PrettyPrint;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -78,7 +80,7 @@ public class Minesweeper {
     }
 
     private void run(Scanner scanner) {
-        print();
+        PrettyPrint.print(board);
 
         while (status.equals(GameStatus.IN_PROGRESS)) {
             Cell cellToClick = getCellToClick(scanner, getBoard());
@@ -92,12 +94,8 @@ public class Minesweeper {
                     System.out.println("Congrats, you win!");
                     break;
             }
-            print();
+            PrettyPrint.print(board);
         }
-    }
-
-    public void print() {
-        getBoard().print();
     }
 
     public Cell clickCell(Cell cellToClick) {

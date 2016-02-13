@@ -1,5 +1,6 @@
 package com.tophatter;
 
+import com.tophatter.io.PrettyPrint;
 import org.junit.Test;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class MinesweeperTest {
         List<Cell> cells = game.computeAllAdjacentCells(cell.getX(), cell.getY());
         assertTrue(cells.size() == 3);
 
-        game.print();
+        PrettyPrint.print(game.getBoard());
 
         cell = new Cell(2, 2);
         cells = game.computeAllAdjacentCells(cell.getX(), cell.getY());

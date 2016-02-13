@@ -1,5 +1,6 @@
 package com.tophatter;
 
+import com.tophatter.io.PrettyPrint;
 import org.junit.Test;
 
 import java.util.Random;
@@ -37,7 +38,7 @@ public class BoardTest {
     @Test
     public void testPrint() throws Exception {
         Board board = new Board(5);
-        board.print();
+        PrettyPrint.print(board);
     }
 
     @Test

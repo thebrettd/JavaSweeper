@@ -2,6 +2,7 @@ package com.tophatter.solver;
 
 import com.tophatter.Cell;
 import com.tophatter.Minesweeper;
+import com.tophatter.io.PrettyPrint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,9 +50,7 @@ public class BrettSolver extends AbstractSolver {
 
         /*
         You can uncomment these lines, to watch the solver play - fun!
-
-        board.print();
-        System.out.println();
+        PrettyPrint.print(board);
         */
 
         if (game.getStatus().equals(Minesweeper.GameStatus.LOSS)) {
